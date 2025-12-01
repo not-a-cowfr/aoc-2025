@@ -3,7 +3,6 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"day": "bun run bun-run.ts",
 		"format": "prettier --write . && eslint --fix ."
 	},
 	"devDependencies": {
