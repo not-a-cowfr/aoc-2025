@@ -23,7 +23,7 @@ for l in $combination_raw {
 	}
 
 	# for debugging
-	# print $"turning ($data.direction) ($data.amount) times to end up at ($pos)"
+	print -n $"\rturning ($data.direction) ($data.amount) times to end up at ($pos) "
 };
 
 print "\ntimes hit 0:"
