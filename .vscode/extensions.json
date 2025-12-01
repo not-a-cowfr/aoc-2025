@@ -1,0 +1,9 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"tamasfe.even-better-toml",
+		"rust-lang.rust-analyzer",
+		"thenuprojectcontributors.vscode-nushell-lang"
+	]
+}
