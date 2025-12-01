@@ -1,0 +1,16 @@
+[workspace]
+members = ["day_*/rust"]
+resolver = "3"
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+incremental = true
+
+[profile.dev]
+opt-level = 1
+incremental = true
