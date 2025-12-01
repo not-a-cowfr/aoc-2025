@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-let combination_raw = ^cat ($env.CURRENT_FILE | path dirname | path dirname | path join combination.txt) | lines;
+let combination_raw = ^cat ($env.CURRENT_FILE | path dirname | path dirname | path dirname | path join combination.txt) | lines;
 mut pos = 50;
 mut zero_count = 0;
 

@@ -3,7 +3,8 @@ use std::{env, fs};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?);
-	let combination_file = find_file_from_dir(root.parent().unwrap(), "combination.txt")?;
+	let combination_file =
+		find_file_from_dir(root.parent().unwrap().parent().unwrap(), "combination.txt")?;
 	let combination = fs::read_to_string(combination_file)?;
 	let combination_lines = combination.lines();
 

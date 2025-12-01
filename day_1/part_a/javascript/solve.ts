@@ -1,6 +1,6 @@
 import path from 'path';
 
-const combination_file = path.resolve(import.meta.dir, '../combination.txt');
+const combination_file = path.resolve(import.meta.dir, '../../combination.txt');
 const combination = (await Bun.file(combination_file).text()).split(/\r?\n/);
 
 let pos = 50;
