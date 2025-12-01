@@ -1,0 +1,19 @@
+{
+	"name": "2025",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"day": "bun run bun-run.ts",
+		"format": "prettier --write . && eslint --fix ."
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"eslint": "^9",
+		"eslint-config-prettier": "^10.1.8",
+		"prettier": "^3.6.2",
+		"typescript-eslint": "^8.48.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
