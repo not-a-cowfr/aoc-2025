@@ -10,7 +10,7 @@ set shell := ["nu", "-c"]
 	let part = ls -s $day | where type == dir | where name =~ "part_.+" | get name | str join "\n" | fzf; \
 	let lang = ls -s $"($day)/($part)" | where type == dir | get name | str join "\n" | fzf; \
 	match $lang { \
-		'rust' => {cargo run -q $"($day)-($part)"}, \
+		'rust' => {cargo run -q -p $"($day)-($part)"}, \
 		'nushell' => {nu -c $'./($day)/($part)/nushell/solve.nu'}, \
 		'javascript' => {bun run $'./($day)/($part)/javascript/solve.ts'}, \
 	} 

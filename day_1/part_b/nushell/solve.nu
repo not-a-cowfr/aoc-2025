@@ -26,10 +26,14 @@ for l in $combination_raw {
         | where $it == 0 # only the times that it moved onto 0
         | length; # get the length of the list which is just th total of times it was on 0
 
+# let a = $new_pos..(if $data.direction == "R" {$pos + 1} else {$pos - 1}) | par-each {||};
+# let b = $new_pos..(if $data.direction == "R" {$pos + 1} else {$pos - 1}) | par-each {|n| $n mod 100} | where $it == 0;
+
     # now we can update the stored position
     $pos = $new_pos mod 100;
 
-	print -n $"\rturning ($data.direction) ($data.amount) times to end up at ($pos), zero count is now ($zero_count) "
+	# print $"turning ($data.direction) ($data.amount) times to end up at ($pos), zero count is now ($a) "
+	# print $"($a)\t\t\t($b)\n\n"
 };
 
 print "\ntimes hit 0:"
