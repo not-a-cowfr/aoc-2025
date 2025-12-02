@@ -24,4 +24,4 @@ for id in ($id_ranges | parse --regex "(?<start>\\d+)-(?<end>\\d+)" | into int s
 	}
 }
 
-$fake_ids | uniq | math sum
+$fake_ids | math sum

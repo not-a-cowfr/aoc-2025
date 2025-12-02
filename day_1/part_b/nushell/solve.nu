@@ -1,36 +1,18 @@
 #!/usr/bin/env nu
 
-let combination_raw = ^cat ($env.CURRENT_FILE | path dirname | path dirname | path dirname | path join combination.txt) | lines;
-mut pos = 50;
-mut zero_count = 0;
+let combinations = open ($env.CURRENT_FILE | path dirname | path dirname | path dirname | path join combination.txt) | str replace -a "L" "-" | str replace -a "R" "" | lines | par-each --keep-order {into int};
 
-for l in $combination_raw {
-    let data = $l
-        | parse --regex "(?<direction>[LR])(?<amount>\\d+)"
-        | into int amount
-        | get 0;
+let foldf = {|it: string, acc: record<count: int, pos: int>| 
+  let new_pos_raw = $it + $acc.pos
+  let new_pos = $new_pos_raw mod 100
 
-    # make clone so that we ahve something to mutate but still keep the starting position for later
-    mut new_pos = $pos;
+  let zeros: int = if $new_pos_raw < 0 {
+    ($new_pos_raw | math abs) // 100 + ($acc.pos != 0 | into int)
+  } else {
+    $new_pos_raw // 100 + ($new_pos_raw == 0 | into int)
+  }
 
-    # if turning right, add the amount, else subtract it
-    if $data.direction == "R" {
-        $new_pos += $data.amount;
-    } else {
-        $new_pos -= $data.amount;
-    }
+  {count: ($acc.count + $zeros), pos: $new_pos}
+}
 
-    # this looks so stupid but thers no better way to expand a range into a list then get the occurances of something
-    $zero_count += $new_pos..(if $data.direction == "R" {$pos + 1} else {$pos - 1}) # makes range from the starting position to the new position, not accounting for looping
-        | par-each {|n| $n mod 100} # account for looping now
-        | where $it == 0 # only the times that it moved onto 0
-        | length; # get the length of the list which is just th total of times it was on 0
-
-    # now we can update the stored position
-    $pos = $new_pos mod 100;
-
-	# print $"turning ($data.direction) ($data.amount) times to end up at ($pos), zero count is now ($a) "
-};
-
-print "\ntimes hit 0:"
-$zero_count
+$combinations | reduce --fold {count: 0, pos: 50} $foldf

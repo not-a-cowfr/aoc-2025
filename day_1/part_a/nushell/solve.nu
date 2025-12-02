@@ -1,30 +1,10 @@
 #!/usr/bin/env nu
 
-let combination_raw = ^cat ($env.CURRENT_FILE | path dirname | path dirname | path dirname | path join combination.txt) | lines;
-mut pos = 50;
-mut zero_count = 0;
+let combinations = open ($env.CURRENT_FILE | path dirname | path dirname | path dirname | path join combination.txt) | str replace -a "L" "-" | str replace -a "R" "" | lines | par-each --keep-order {into int};
 
-for l in $combination_raw {
-    let data = $l
-        | parse --regex "(?<direction>[LR])(?<amount>\\d+)"
-        | into int amount
-        | get 0;
+let foldf = {|it: string, acc: record<count: int, pos: int>| 
+  let new: int = ($it + $acc.pos) mod 100
+  {count: ($acc.count + ($new == 0 | into int)), pos: $new}
+}
 
-    if $data.direction == "R" {
-        $pos += $data.amount;
-    } else {
-        $pos -= $data.amount;
-    }
-
-	$pos = $pos mod 100;
-	
-	if $pos == 0 {
-		$zero_count += 1;
-	}
-
-	# for debugging
-	print -n $"\rturning ($data.direction) ($data.amount) times to end up at ($pos) "
-};
-
-print "\ntimes hit 0:"
-$zero_count
+$combinations | reduce --fold {count: 0, pos: 50} $foldf
