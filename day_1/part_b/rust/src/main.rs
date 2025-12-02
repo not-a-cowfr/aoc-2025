@@ -1,11 +1,15 @@
 use std::ops::RangeInclusive;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::{env, fs};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?);
-	let combination_file =
-		find_file_from_dir(root.parent().unwrap().parent().unwrap(), "combination.txt")?;
+	let combination_file = root
+		.parent()
+		.unwrap()
+		.parent()
+		.unwrap()
+		.join("combination.txt");
 	let combination = fs::read_to_string(combination_file)?;
 	let combination_lines = combination.lines();
 
@@ -36,29 +40,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	println!("times hit 0: {}", zero_count);
 
 	Ok(())
-}
-
-fn find_file_from_dir(
-	dir: &Path,
-	filename: &str,
-) -> Result<PathBuf, Box<dyn std::error::Error>> {
-	let files = fs::read_dir(dir)?;
-
-	for file in files {
-		if let Ok(file) = file {
-			let path = file.path();
-
-			if let Some(filename_os_str) = path.file_name() {
-				if let Some(filename_str) = filename_os_str.to_str() {
-					if filename_str == filename {
-						return Ok(path);
-					}
-				}
-			}
-		}
-	}
-
-	Err("no files with that name found".into())
 }
 
 fn split_first_char(s: &str) -> (char, &str) {
